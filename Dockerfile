@@ -21,7 +21,7 @@ COPY --from=builder /usr/local /usr/local/
 
 
 RUN apt update; apt upgrade;
-RUN apt install -y --no-install-recommends wget git fzf ripgrep ca-certificates gcc libc6-dev;
+RUN apt install -y --no-install-recommends wget git fzf ripgrep ca-certificates gcc libc6-dev pkg-config libssl-dev;
 #RUN apt install -y --no-install-recommends wget git fzf ripgrep ca-certificates gcc libc6-dev libgcc1;
 #RUN URL=$(wget https://api.github.com/repos/neovim/neovim/releases/latest -O - | \
 #	awk -F \" -v RS="," '/browser_download_url/ {print $(NF-1)}'| sed '/.deb/!d'); \
