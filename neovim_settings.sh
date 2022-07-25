@@ -13,6 +13,7 @@ mkdir -p "$HOME/.config/nvim"
 echo "Create $HOME/.config/nvim/init.vim and coc json"
 cat << 'EOF' > "$HOME/.config/nvim/init.vim"
 call plug#begin('~/.vim/plugged')
+Plug 'habamax/vim-godot'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-sensible'
 Plug 'preservim/nerdtree'
@@ -311,6 +312,13 @@ cat << 'EOF' > "$HOME/.config/nvim/coc-settings.json"
   "coc.preferences.formatOnSaveFiletypes": ["*"],
   "tsserver.formatOnType": true,
   "coc.preferences.formatOnType": true,
+  "languageserver": {
+	"godot": {
+		"host": "127.0.0.1",
+		"filetypes": ["gdscript"],
+		"port": 5407
+	}
+  }
 }
 EOF
 

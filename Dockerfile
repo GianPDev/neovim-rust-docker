@@ -21,9 +21,7 @@ COPY --from=builder /usr/local /usr/local/
 
 RUN apt update; apt upgrade;
 RUN apt install -y --no-install-recommends wget git fzf ripgrep ca-certificates gcc libc6-dev pkg-config libssl-dev ;
-RUN apt install -y python3-pip; pip3 install --no-cache-dir --target=/usr/local/ neovim-remote; #&& \
 
-RUN apt remove python3-pip; apt autoremove; apt install -y --no-install-recommends python3
 #RUN apt install -y --no-install-recommends wget git fzf ripgrep ca-certificates gcc libc6-dev libgcc1;
 #RUN URL=$(wget https://api.github.com/repos/neovim/neovim/releases/latest -O - | \
 #	awk -F \" -v RS="," '/browser_download_url/ {print $(NF-1)}'| sed '/.deb/!d'); \
@@ -86,6 +84,11 @@ RUN mkdir -p "$HOME/.config/coc/extensions" && cd "$HOME/.config/coc/extensions"
   coc-tabnine \ 
   coc-prisma \
   --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
+
+RUN apt install -y python3-pip && pip3 install neovim-remote;
+# RUN apt remove -y python3-pip && apt autoremove -y
+#RUN apt remove -y build-essential dbus dh-python dirmngr dpkg-dev fakeroot g++ g++-8 gir1.2-glib-2.0 gnupg gnupg-l10n gnupg-utils gpg gpg-agent gpg-wks-client gpg-wks-server gpgconf gpgsm   libalgorithm-diff-perl libalgorithm-diff-xs-perl libalgorithm-merge-perl libapparmor1 libassuan0 libdbus-1-3 libexpat1-dev libfakeroot libgirepository-1.0-1 libksba8   libnpth0 libpython3-dev libpython3.7 libpython3.7-dev libstdc++-8-dev lsb-base pinentry-curses python-pip-whl python3-asn1crypto python3-cffi-backend python3-crypto   python3-cryptography python3-dbus python3-dev python3-distutils python3-entrypoints python3-gi python3-keyring python3-keyrings.alt python3-lib2to3 python3-pip   python3-pkg-resources python3-secretstorage python3-setuptools python3-six python3-wheel python3-xdg python3.7-dev
+# RUN apt install -y --no-install-recommends wget git fzf ripgrep ca-certificates gcc libc6-dev pkg-config libssl-dev ;
 
 RUN echo "source /usr/local/cargo/env" >> "$HOME/.bashrc"
 
