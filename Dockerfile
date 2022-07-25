@@ -1,6 +1,6 @@
 FROM debian:buster-slim AS builder
 
-ARG BUILD_APT_DEPS="ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip git binutils"
+ARG BUILD_APT_DEPS="ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip git binutils python3-pip"
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TARGET=stable
 
@@ -12,8 +12,7 @@ RUN apt update && apt upgrade -y && \
   git checkout ${TARGET} && \
   make CMAKE_BUILD_TYPE=Release && \
   make CMAKE_INSTALL_PREFIX=/usr/local install && \
-  strip /usr/local/bin/nvim
-
+  strip /usr/local/bin/nvim 
 
 FROM node:current-buster-slim
 
@@ -21,7 +20,10 @@ COPY --from=builder /usr/local /usr/local/
 
 
 RUN apt update; apt upgrade;
-RUN apt install -y --no-install-recommends wget git fzf ripgrep ca-certificates gcc libc6-dev pkg-config libssl-dev;
+RUN apt install -y --no-install-recommends wget git fzf ripgrep ca-certificates gcc libc6-dev pkg-config libssl-dev ;
+RUN apt install -y python3-pip; pip3 install --no-cache-dir --target=/usr/local/ neovim-remote; #&& \
+
+RUN apt remove python3-pip; apt autoremove; apt install -y --no-install-recommends python3
 #RUN apt install -y --no-install-recommends wget git fzf ripgrep ca-certificates gcc libc6-dev libgcc1;
 #RUN URL=$(wget https://api.github.com/repos/neovim/neovim/releases/latest -O - | \
 #	awk -F \" -v RS="," '/browser_download_url/ {print $(NF-1)}'| sed '/.deb/!d'); \
